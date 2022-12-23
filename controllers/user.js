@@ -49,6 +49,7 @@ module.exports = {
             const token = jwt.sign({ userId: user._id }, SECRET);
             res.status(200).send({ success: true, user, token });
         } catch (err) {
+            console.log('error catch');
             return res.status(422).send({
                 success: false,
                 error: "invalid password or email"
