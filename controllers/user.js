@@ -14,7 +14,7 @@ module.exports = {
             await user.save()
             res.status(200).send({
                 success: true,
-                user
+                data: user
             })
         } catch (error) {
             if (error.code === 11000)
@@ -27,27 +27,30 @@ module.exports = {
     },
     login: async (req, res) => {
         const { email, password } = req.body
-        if (!email || !password) {
-            return res
-                .status(421)
-                .send({
-                    success: false,
-                    error: "username and password are required"
-                });
-        }
-        const user = await User.findOne({ email })
-        if (!user) {
-            console.log("user doesn't exist!");
-            return res.status(422).send({
-                success: false,
-                error: "invalid password or email"
-            });
-        }
         try {
-            await User.findOne({ email })
+            if (!email || !password) {
+                return res
+                    .status(421)
+                    .send({
+                        success: false,
+                        error: "username and password are required"
+                    });
+            }
+            const user = await User.findOne({ email })
+            if (!user) {
+                console.log("user doesn't exist!");
+                return res.status(422).send({
+                    success: false,
+                    error: "invalid password or email"
+                });
+            }
+
             await user.comparePassword(password)
             const token = jwt.sign({ userId: user._id }, SECRET);
-            res.status(200).send({ success: true, user, token });
+            res.status(200).send({
+                success: true,
+                token
+            });
         } catch (error) {
             console.log(error);
             return res.status(422).send({
