@@ -44,12 +44,12 @@ module.exports = {
             });
         }
         try {
-            await User.findOneAndUpdate({ email })
-            await user.comparePassword(password);
+            await User.findOne({ email })
+            await user.comparePassword(password)
             const token = jwt.sign({ userId: user._id }, SECRET);
             res.status(200).send({ success: true, user, token });
         } catch (error) {
-            console.log('error catch');
+            console.log(error);
             return res.status(422).send({
                 success: false,
                 error: "invalid password or email"
