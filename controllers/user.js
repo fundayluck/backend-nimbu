@@ -48,7 +48,7 @@ module.exports = {
             await user.comparePassword(password);
             const token = jwt.sign({ userId: user._id }, SECRET);
             res.status(200).send({ success: true, user, token });
-        } catch (err) {
+        } catch (error) {
             console.log('error catch');
             return res.status(422).send({
                 success: false,
