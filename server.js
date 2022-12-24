@@ -6,14 +6,14 @@ const mongoose = require('./db/conn')
 const morgan = require('morgan')
 const cors = require('cors')
 const corsOptions = require('./config/cors')
-const AuthRouter = require("./routes/user")
+const auth = require('./routes/user')
 
 app.use(NODE_ENV === "production" ? cors(corsOptions) : cors())
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
 
-app.use("/auth", AuthRouter)
+app.use("/auth", auth)
 app.get("/", (req, res) => {
     res.send("hello world")
 })

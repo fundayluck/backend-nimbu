@@ -5,11 +5,20 @@ const { SECRET } = process.env
 
 module.exports = {
     signup: async (req, res) => {
-        const { email, password } = req.body
+        const {
+            email,
+            password,
+            division,
+            name,
+            id_employee
+        } = req.body
         try {
             const user = new User({
                 email,
-                password
+                password,
+                division,
+                name,
+                id_employee
             })
             await user.save()
             res.status(200).send({
@@ -17,6 +26,7 @@ module.exports = {
                 data: user
             })
         } catch (error) {
+            console.log(error);
             if (error.code === 11000)
                 return res.status(422).send({
                     success: false,

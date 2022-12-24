@@ -4,12 +4,24 @@ const bcrypt = require("bcrypt");
 const UserSchema = new Schema({
     email: {
         type: String,
-        required: [true, 'email must be filled'],
+        required: true,
         unique: true,
     },
     password: {
         type: String,
-        required: [true, 'password must be filled']
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    id_employee: {
+        type: String,
+        required: true,
+    },
+    division: {
+        type: String,
+        required: true,
     }
 }, { timestamps: true })
 
