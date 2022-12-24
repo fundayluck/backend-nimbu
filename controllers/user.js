@@ -26,7 +26,6 @@ module.exports = {
                 data: user
             })
         } catch (error) {
-            console.log(error);
             if (error.code === 11000 && error.keyPattern.id_employee === 1) {
                 return res.status(422).send({
                     success: false,
@@ -55,7 +54,6 @@ module.exports = {
             }
             const user = await User.findOne({ email })
             if (!user) {
-                console.log("user doesn't exist!");
                 return res.status(422).send({
                     success: false,
                     error: "invalid password or email"
@@ -69,7 +67,6 @@ module.exports = {
                 token
             });
         } catch (error) {
-            console.log(error);
             return res.status(422).send({
                 success: false,
                 error: "invalid password or email"
