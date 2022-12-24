@@ -27,11 +27,18 @@ module.exports = {
             })
         } catch (error) {
             console.log(error);
-            if (error.code === 11000)
+            if (error.code === 11000 && error.keyPattern.id_employee === 1) {
                 return res.status(422).send({
                     success: false,
-                    message: 'User already exist!'
+                    message: 'User id employee already exist!'
                 })
+            }
+            if (error.code === 11000 && error.keyPattern.email === 1) {
+                return res.status(422).send({
+                    success: false,
+                    message: 'User email already exist!'
+                })
+            }
             return res.status(422).send(error);
         }
     },

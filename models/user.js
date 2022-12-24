@@ -18,6 +18,7 @@ const UserSchema = new Schema({
     id_employee: {
         type: String,
         required: true,
+        unique: true,
     },
     division: {
         type: String,
