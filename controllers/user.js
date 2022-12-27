@@ -65,7 +65,9 @@ module.exports = {
             }
 
             await user.comparePassword(password)
-            const token = jwt.sign({ userId: user._id }, SECRET);
+            const token = jwt.sign({ userId: user._id }, SECRET, {
+                expiresIn: '1d'
+            });
             res.status(200).send({
                 success: true,
                 token
