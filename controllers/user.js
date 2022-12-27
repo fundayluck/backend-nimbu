@@ -71,8 +71,12 @@ module.exports = {
         }
     },
     getAllUser: async (req, res) => {
-        const user = await User.find({}).populate('id_staff').populate()
-        res.status(200).send(user)
+        try {
+            const user = await User.find({}).populate('id_staff').populate()
+            res.status(200).send(user)
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
