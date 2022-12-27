@@ -2,6 +2,12 @@ const { Schema, model } = require("mongoose")
 const bcrypt = require("bcrypt");
 
 const UserSchema = new Schema({
+    id_staff: {
+        type: Number,
+        ref: "staff",
+        required: true,
+        unique: true
+    },
     email: {
         type: String,
         required: true,
@@ -11,19 +17,6 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    name: {
-        type: String,
-        required: true,
-    },
-    id_employee: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    division: {
-        type: String,
-        required: true,
-    }
 }, { timestamps: true })
 
 UserSchema.pre("save", function (next) {

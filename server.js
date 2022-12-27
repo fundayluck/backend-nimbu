@@ -7,13 +7,15 @@ const morgan = require('morgan')
 const cors = require('cors')
 const corsOptions = require('./config/cors')
 const auth = require('./routes/user')
+const staff = require('./routes/staff')
 
 app.use(NODE_ENV === "production" ? cors(corsOptions) : cors())
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
 
-app.use("/auth", auth)
+app.use("/auth", auth, staff)
+
 app.get("/", (req, res) => {
     res.send("hello world")
 })
