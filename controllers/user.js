@@ -11,13 +11,15 @@ module.exports = {
         const {
             email,
             password,
-            id_staff
+            id_staff,
+            role
         } = req.body
         try {
             const user = new User({
                 email,
                 password,
                 id_staff,
+                role
             })
             await user.save()
             res.status(200).send({
@@ -25,11 +27,16 @@ module.exports = {
                 data: user
             })
         } catch (error) {
-            console.log(error);
             if (error.code === 11000 && error.keyPattern.email === 1) {
                 return res.status(422).send({
                     success: false,
                     message: 'User email already exist!'
+                })
+            }
+            if (error.code === 11000 && error.keyPattern.id_staff === 1) {
+                return res.status(422).send({
+                    success: false,
+                    message: 'User staff of id already exist!'
                 })
             }
             return res.status(422).send({

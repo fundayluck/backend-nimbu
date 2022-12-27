@@ -18,8 +18,9 @@ const UserSchema = new Schema({
         required: true,
     },
     is_active: {
-        type: String,
-        enum: ['0', '1']
+        type: Number,
+        enum: [0, 1],
+        default: 1
     },
     role: {
         type: String,
