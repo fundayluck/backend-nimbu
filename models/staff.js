@@ -20,6 +20,10 @@ const StaffSchema = new mongoose.Schema({
     },
     NIK: {
         type: String
+    },
+    is_deleted: {
+        type: String,
+        enum: ['0', '1']
     }
 })
 

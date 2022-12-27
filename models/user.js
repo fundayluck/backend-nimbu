@@ -17,6 +17,14 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    is_active: {
+        type: String,
+        enum: ['0', '1']
+    },
+    role: {
+        type: String,
+        enum: ['ADMIN', 'HR', 'STAFF']
+    }
 }, { timestamps: true })
 
 UserSchema.pre("save", function (next) {
