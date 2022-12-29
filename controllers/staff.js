@@ -23,18 +23,18 @@ module.exports = {
             })
             await staff.save()
             res.status(200).send({
-                success: true,
+                status: true,
                 data: staff
             })
         } catch (error) {
             if (error.code === 11000 && error.keyPattern._id === 1) {
                 return res.status(422).send({
-                    success: false,
+                    status: false,
                     message: 'User id already exist!'
                 })
             }
             return res.status(422).send({
-                success: false,
+                status: false,
                 message: error.message
             });
         }

@@ -4,16 +4,15 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const { SECRET } = process.env
 
-
-
 module.exports = {
-    signup: async (req, res) => {
+    createUsers: async (req, res) => {
         const {
             email,
             password,
             id_staff,
             role
         } = req.body
+        const creator = req.user
         try {
             const user = new User({
                 email,
@@ -21,26 +20,33 @@ module.exports = {
                 id_staff,
                 role
             })
-            await user.save()
-            res.status(200).send({
-                success: true,
-                data: user
-            })
+            if (role === creator.role) {
+                res.status(400).send({
+                    status: false,
+                    message: "HR cannot create another HR"
+                })
+            } else {
+                await user.save()
+                res.status(200).send({
+                    status: true,
+                    data: user
+                })
+            }
         } catch (error) {
             if (error.code === 11000 && error.keyPattern.email === 1) {
-                return res.status(422).send({
-                    success: false,
+                return res.status(400).send({
+                    status: false,
                     message: 'User email already exist!'
                 })
             }
             if (error.code === 11000 && error.keyPattern.id_staff === 1) {
-                return res.status(422).send({
-                    success: false,
+                return res.status(400).send({
+                    status: false,
                     message: 'User staff of id already exist!'
                 })
             }
-            return res.status(422).send({
-                success: false,
+            return res.status(400).send({
+                status: false,
                 message: error.message
             });
         }
@@ -52,14 +58,14 @@ module.exports = {
                 return res
                     .status(421)
                     .send({
-                        success: false,
+                        status: false,
                         error: "username and password are required"
                     });
             }
             const user = await User.findOne({ email })
             if (!user) {
                 return res.status(422).send({
-                    success: false,
+                    status: false,
                     error: "invalid password or email"
                 });
             }
@@ -69,12 +75,12 @@ module.exports = {
                 expiresIn: '1d'
             });
             res.status(200).send({
-                success: true,
+                status: true,
                 token
             });
         } catch (error) {
             return res.status(422).send({
-                success: false,
+                status: false,
                 error: "invalid password or email"
             });
         }

@@ -8,7 +8,7 @@ const controllerStaff = require('../controllers/staff')
 const router = express.Router()
 
 router.post('/login', controllerUser.login)
-router.post("/create-user", auth, controllerUser.signup)
+router.post("/create-user", auth, controllerUser.createUsers)
 router.get('/user', auth, controllerUser.getAllUser)
 router.post('/create-account', auth, controllerStaff.createAccount)
 router.get('/staff', auth, controllerStaff.getAllStaff)
