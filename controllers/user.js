@@ -20,10 +20,15 @@ module.exports = {
                 id_staff,
                 role
             })
-            if (role === creator.role) {
+            if (role === 'HR' && creator.role === 'HR') {
                 res.status(400).send({
                     status: false,
                     message: "HR cannot create another HR"
+                })
+            } else if (creator.role === "STAFF") {
+                res.status(400).send({
+                    status: false,
+                    message: "staff cannot create user"
                 })
             } else {
                 await user.save()
