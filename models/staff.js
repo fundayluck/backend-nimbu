@@ -23,7 +23,8 @@ const StaffSchema = new mongoose.Schema({
     },
     is_deleted: {
         type: String,
-        enum: ['0', '1']
+        enum: [0, 1],
+        default: 0
     }
 })
 
