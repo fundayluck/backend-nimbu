@@ -31,6 +31,7 @@ module.exports = {
                     message: "staff cannot create user"
                 })
             } else {
+                console.log(user);
                 await user.save()
                 res.status(200).send({
                     status: true,
@@ -95,7 +96,7 @@ module.exports = {
             const user = await User.find({}).populate('id_staff').populate()
             res.status(200).send(user)
         } catch (error) {
-            console.log(error);
+            res.status(400).send(error.message)
         }
     }
 }

@@ -12,6 +12,7 @@ app.use(NODE_ENV === "production" ? cors(corsOptions) : cors())
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
+app.use('/upload', express.static('./upload'))
 
 app.use("/api", require('./routes'))
 

@@ -18,7 +18,7 @@ module.exports = {
                 name,
                 phone,
                 address,
-                photo,
+                photo: req.file.path,
                 NIK
             })
             await staff.save()

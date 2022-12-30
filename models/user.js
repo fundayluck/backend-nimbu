@@ -6,7 +6,6 @@ const UserSchema = new Schema({
         type: Number,
         ref: "staff",
         required: true,
-        unique: true
     },
     email: {
         type: String,
