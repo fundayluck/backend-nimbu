@@ -31,7 +31,6 @@ module.exports = {
                     message: "staff cannot create user"
                 })
             } else {
-                console.log(user);
                 await user.save()
                 res.status(200).send({
                     status: true,
