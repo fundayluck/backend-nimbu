@@ -2,7 +2,7 @@ require('dotenv').config()
 const User = require('../models/user')
 
 const jwt = require('jsonwebtoken')
-const { SECRET } = process.env
+const { ACCESS_TOKEN_SECRET } = process.env
 
 module.exports = {
     createUsers: async (req, res) => {
@@ -74,14 +74,15 @@ module.exports = {
                     error: "invalid password or email"
                 });
             }
-
             await user.comparePassword(password)
-            const token = jwt.sign({ userId: user._id }, SECRET, {
-                expiresIn: '1d'
-            });
+            const accessToken = jwt.sign(
+                { userId: user._id },
+                ACCESS_TOKEN_SECRET,
+                { expiresIn: '1d' }
+            );
             res.status(200).send({
                 status: true,
-                token
+                accessToken
             });
         } catch (error) {
             return res.status(422).send({

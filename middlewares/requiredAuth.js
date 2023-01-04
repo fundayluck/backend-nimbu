@@ -1,7 +1,7 @@
 require('dotenv').config()
 const jwt = require("jsonwebtoken");
 const User = require('../models/user')
-const { SECRET } = process.env
+const { ACCESS_TOKEN_SECRET } = process.env
 
 module.exports = (req, res, next) => {
     const { authorization } = req.headers;
@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
     }
 
     const token = authorization.replace("Bearer ", "");
-    jwt.verify(token, SECRET, async (err, payload) => {
+    jwt.verify(token, ACCESS_TOKEN_SECRET, async (err, payload) => {
         if (err) {
             return res.status(401).send({ error: "you must be log in!" });
         }
