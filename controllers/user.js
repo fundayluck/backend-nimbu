@@ -82,7 +82,7 @@ module.exports = {
             );
             res.status(200).send({
                 status: true,
-                accessToken
+                token: accessToken
             });
         } catch (error) {
             return res.status(422).send({
@@ -94,9 +94,29 @@ module.exports = {
     getAllUser: async (req, res) => {
         try {
             const user = await User.find({}).populate('id_staff').populate()
-            res.status(200).send(user)
+            res.status(200).send({
+                status: true,
+                data: user
+            })
         } catch (error) {
-            res.status(400).send(error.message)
+            res.status(400).send({
+                status: false,
+                message: error.message
+            })
+        }
+    },
+    getUser: async (req, res) => {
+        try {
+            const user = await User.findOne({ _id: req.params.userId }).populate('id_staff')
+            res.status(200).send({
+                status: 'success',
+                data: user
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: false,
+                message: error.message
+            })
         }
     }
 }
