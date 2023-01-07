@@ -1,6 +1,6 @@
 var whitelist = [
     "http://localhost:5000",
-    "https://backend-nimbu.cyclic.app"
+    "https://backend-nimbu.cyclic.ap"
 ]
 var corsOptions = {
     origin: function (origin, callback) {
