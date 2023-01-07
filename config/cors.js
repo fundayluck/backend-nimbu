@@ -1,4 +1,4 @@
-var whitelist = []
+var whitelist = ['https://backend-nimbu.cyclic.ap']
 var corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
