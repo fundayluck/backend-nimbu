@@ -1,7 +1,11 @@
-var whitelist = ['http://localhost:5000/']
+var whitelist = [
+    "http://localhost:5000",
+    "https://backend-nimbu.cyclic.app"
+]
 var corsOptions = {
     origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
+        if (whitelist.indexOf(origin) >= 0 || !origin) {
+            console.log(origin);
             callback(null, true)
         } else {
             callback(new Error('not allowed by CORS'))
