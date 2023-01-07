@@ -2,7 +2,7 @@ require('dotenv').config()
 const { PORT, NODE_ENV } = process.env
 const express = require('express')
 const app = express()
-const mongoose = require('./db/conn')
+const connectDB = require('./db/conn')
 const morgan = require('morgan')
 const cors = require('cors')
 const corsOptions = require('./config/cors')
@@ -16,6 +16,8 @@ app.use('/upload', express.static('./upload'))
 
 app.use("/api", require('./routes'))
 
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`)
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Listening on port ${PORT}`)
+    })
 })

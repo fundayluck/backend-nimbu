@@ -3,11 +3,15 @@ const { MONGODB_URI } = process.env
 const mongoose = require('mongoose')
 const config = { useNewUrlParser: true, useUnifiedTopology: true }
 
-mongoose.set('strictQuery', true)
-mongoose.connect(MONGODB_URI, config)
-mongoose.connection
-    .on("open", () => console.log("You are connected to mongo"))
-    .on("close", () => console.log("You are disconnected to mongo"))
-    .on("error", (error) => console.log(error))
+mongoose.set('strictQuery', false);
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(MONGODB_URI, config);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
+    }
+}
 
-module.exports = mongoose
+module.exports = connectDB
