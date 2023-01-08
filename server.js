@@ -8,7 +8,7 @@ const cors = require('cors')
 const corsOptions = require('./config/cors')
 
 
-app.use(NODE_ENV === "production" ? cors(corsOptions()) : cors())
+app.use(NODE_ENV === "production" ? cors(corsOptions(origin)) : cors())
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
