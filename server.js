@@ -5,11 +5,10 @@ const app = express()
 const connectDB = require('./db/conn')
 const morgan = require('morgan')
 const cors = require('cors')
-const corsOptions = require('./config/cors')
 const { origin } = require('./config/cors')
 
 
-app.use(NODE_ENV === "production" ? cors(corsOptions(origin)) : cors())
+app.use(NODE_ENV === "production" ? cors(origin) : cors())
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
