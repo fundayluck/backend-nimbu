@@ -1,5 +1,5 @@
 const whitelist = [
-    "http://localhost:5000",
+    "http://localhost:3000",
     "https://backend-nimbu.cyclic.app"
 ]
 const corsOptions = {
