@@ -7,8 +7,9 @@ const morgan = require('morgan')
 const cors = require('cors')
 const { origin } = require('./config/cors')
 
+const whitelist = ['http://localhost:3000']
 
-app.use(NODE_ENV === "production" ? cors({ origin: 'http://localhost:3000' }) : cors())
+app.use(NODE_ENV === "production" ? cors({ origin: whitelist }) : cors())
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
