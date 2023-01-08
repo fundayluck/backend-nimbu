@@ -6,6 +6,7 @@ const connectDB = require('./db/conn')
 const morgan = require('morgan')
 const cors = require('cors')
 const corsOptions = require('./config/cors')
+const { origin } = require('./config/cors')
 
 
 app.use(NODE_ENV === "production" ? cors(corsOptions(origin)) : cors())
