@@ -1,6 +1,5 @@
 const whitelist = [
-    "http://localhost:3000",
-    "https://backend-nimbu.cyclic.app"
+
 ]
 const corsOptions = {
     origin: (origin, callback) => {
