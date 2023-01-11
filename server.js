@@ -5,7 +5,6 @@ const app = express()
 const connectDB = require('./db/conn')
 const morgan = require('morgan')
 const cors = require('cors')
-const { origin } = require('./config/cors')
 
 const whitelist = ['http://localhost:3000']
 

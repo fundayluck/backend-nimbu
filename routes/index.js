@@ -9,10 +9,11 @@ const upload = require("../middlewares/upload")
 const router = express.Router()
 
 router.post('/login', controllerUser.login)
-router.post("/create-user", auth, controllerUser.createUsers)
+router.post("/create-user", auth, controllerUser.createUser)
 router.get('/user', auth, controllerUser.getAllUser)
 router.get('/user/:userId', auth, controllerUser.getUser)
-router.post('/create-account', auth, upload.single('image'), controllerStaff.createAccount)
+router.post('/create-account', auth, upload.single('image'), controllerStaff.createStaff)
 router.get('/staff', auth, controllerStaff.getAllStaff)
+router.get('/staff/:staffId', auth, controllerStaff.getStaff)
 
 module.exports = router;

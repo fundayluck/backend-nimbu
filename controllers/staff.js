@@ -1,13 +1,15 @@
 const Staff = require('../models/staff')
 const division = require('../models/division')
 module.exports = {
-    createAccount: async (req, res) => {
+    createStaff: async (req, res) => {
         const {
             name,
             phone,
             address,
-            photo,
+            birth,
             NIK,
+            gender,
+            area,
             _id
         } = req.body
         const findDivision = await division.findById(req.body.id_division)
@@ -17,7 +19,10 @@ module.exports = {
                 id_division: findDivision,
                 name,
                 phone,
+                birth,
+                area,
                 address,
+                gender,
                 photo: req.file.path,
                 NIK
             })
@@ -38,9 +43,34 @@ module.exports = {
                 message: error.message
             });
         }
+
     },
     getAllStaff: async (req, res) => {
         const staff = await Staff.find({}).populate('id_division')
-        res.status(200).send(staff)
+        if (staff.length === 0) {
+            res.status(404).send({
+                status: false,
+                data: 'no data available'
+            })
+        } else {
+            res.status(200).send({
+                status: true,
+                data: staff
+            })
+        }
+    },
+    getStaff: async (req, res) => {
+        const staff = await Staff.find({ _id: req.params.userId }).populate('id_division')
+        if (staff.length === 0) {
+            res.status(404).send({
+                status: false,
+                data: 'no data available'
+            })
+        } else {
+            res.status(200).send({
+                status: true,
+                data: staff
+            })
+        }
     }
 }

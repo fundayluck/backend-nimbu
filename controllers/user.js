@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const { ACCESS_TOKEN_SECRET } = process.env
 
 module.exports = {
-    createUsers: async (req, res) => {
+    createUser: async (req, res) => {
         const {
             email,
             password,
@@ -93,7 +93,7 @@ module.exports = {
     },
     getAllUser: async (req, res) => {
         try {
-            const user = await User.find({}).populate('id_staff').populate()
+            const user = await User.find({}).populate('id_staff')
             res.status(200).send({
                 status: true,
                 data: user
