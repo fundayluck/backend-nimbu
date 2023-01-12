@@ -13,7 +13,6 @@ module.exports = {
             role
         } = req.body
         const creator = req.user
-        console.log(req);
         try {
             const user = new User({
                 email,
