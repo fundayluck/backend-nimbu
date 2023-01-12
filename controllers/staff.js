@@ -72,5 +72,27 @@ module.exports = {
                 data: staff
             })
         }
+    },
+    getStaffWithoutAccount: async (req, res) => {
+        const nip = await Staff.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "_id",
+                    foreignField: "id_staff",
+                    as: "joined"
+                }
+            }, {
+                $match: {
+                    joined: []
+                }
+            }
+        ])
+
+        res.status(200).send({
+            status: true,
+            data: nip
+        })
+
     }
 }
