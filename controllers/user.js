@@ -13,6 +13,7 @@ module.exports = {
             role
         } = req.body
         const creator = req.user
+        console.log(req);
         try {
             const user = new User({
                 email,
@@ -82,7 +83,11 @@ module.exports = {
             );
             res.status(200).send({
                 status: true,
-                token: accessToken
+                token: accessToken,
+                user: {
+                    email: user.email,
+                    role: user.role
+                }
             });
         } catch (error) {
             return res.status(422).send({
