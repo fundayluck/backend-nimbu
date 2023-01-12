@@ -10,10 +10,11 @@ module.exports = {
             NIK,
             gender,
             area,
-            _id
+            _id,
+            id_division
         } = req.body
-        const findDivision = await division.findById(req.body.id_division)
         try {
+            const findDivision = await division.findById(id_division)
             const staff = new Staff({
                 _id,
                 id_division: findDivision,
@@ -33,12 +34,12 @@ module.exports = {
             })
         } catch (error) {
             if (error.code === 11000 && error.keyPattern._id === 1) {
-                return res.status(422).send({
+                return res.status(400).send({
                     status: false,
                     message: 'User id already exist!'
                 })
             }
-            return res.status(422).send({
+            return res.status(400).send({
                 status: false,
                 message: error.message
             });
