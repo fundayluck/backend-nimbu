@@ -75,31 +75,36 @@ module.exports = {
         }
     },
     getStaffWithoutAccount: async (req, res) => {
-        const nip = await Staff.aggregate([
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "_id",
-                    foreignField: "id_staff",
-                    as: "joined"
-                }
-            }, {
-                $match: {
-                    joined: []
-                }
-            }
-        ])
-        if (!nip) {
-            res.status(400).send({
-                status: false,
-                data: 'no data'
-            })
-        } else {
-            res.status(200).send({
-                status: true,
-                data: nip
-            })
-        }
+        try {
 
+            const nip = await Staff.aggregate([
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_id",
+                        foreignField: "id_staff",
+                        as: "joined"
+                    }
+                }, {
+                    $match: {
+                        joined: []
+                    }
+                }
+            ])
+            if (nip.length === 0) {
+                console.log('error');
+                res.status(404).send({
+                    status: false,
+                    data: 'no data'
+                })
+            } else {
+                res.status(200).send({
+                    status: true,
+                    data: nip
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
