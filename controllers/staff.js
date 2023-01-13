@@ -89,11 +89,17 @@ module.exports = {
                 }
             }
         ])
-
-        res.status(200).send({
-            status: true,
-            data: nip
-        })
+        if (!nip) {
+            res.status(200).send({
+                status: false,
+                data: 'no data'
+            })
+        } else {
+            res.status(200).send({
+                status: true,
+                data: nip
+            })
+        }
 
     }
 }
