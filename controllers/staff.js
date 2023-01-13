@@ -61,7 +61,7 @@ module.exports = {
         }
     },
     getStaff: async (req, res) => {
-        const staff = await Staff.find({ _id: req.params.userId }).populate('id_division')
+        const staff = await Staff.findOne({ _id: req.params.staffId }).populate('id_division')
         if (staff.length === 0) {
             res.status(404).send({
                 status: false,
