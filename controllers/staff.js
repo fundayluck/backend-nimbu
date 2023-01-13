@@ -76,7 +76,6 @@ module.exports = {
     },
     getStaffWithoutAccount: async (req, res) => {
         try {
-
             const nip = await Staff.aggregate([
                 {
                     $lookup: {
@@ -91,11 +90,18 @@ module.exports = {
                     }
                 }
             ])
+            const populateQuery = [
+                {
+                    path: 'id_division',
+                    select: 'name'
+                }
+            ]
+            await Staff.populate(nip, populateQuery)
             if (nip.length === 0) {
                 console.log('error');
                 res.status(404).send({
                     status: false,
-                    data: 'no data'
+                    data: 'All employees already have an account'
                 })
             } else {
                 res.status(200).send({
