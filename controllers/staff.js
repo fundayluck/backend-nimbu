@@ -90,7 +90,7 @@ module.exports = {
             }
         ])
         if (!nip) {
-            res.status(200).send({
+            res.status(400).send({
                 status: false,
                 data: 'no data'
             })
