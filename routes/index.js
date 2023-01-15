@@ -15,6 +15,7 @@ router.get('/user/:userId', auth, controllerUser.getUser)
 router.post('/create-account', auth, upload.single('image'), controllerStaff.createStaff)
 router.get('/staff', auth, controllerStaff.getAllStaff)
 router.get('/staff/:staffId', auth, controllerStaff.getStaff)
+router.put('/staff/:staffId/edit', auth, controllerStaff.editStaff)
 router.get('/nip', auth, controllerStaff.getStaffWithoutAccount)
 
 module.exports = router;

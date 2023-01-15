@@ -112,5 +112,40 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+    editStaff: async (req, res) => {
+        const {
+            name,
+            phone,
+            birth,
+            address,
+            NIK,
+            gender,
+            area,
+            id_division
+        } = req.body
+        try {
+            const findDivision = await division.findById(id_division)
+            await Staff.updateOne({ _id: req.params.staffId },
+                {
+                    name,
+                    id_division: findDivision,
+                    phone,
+                    birth,
+                    address,
+                    NIK,
+                    gender,
+                    area
+                })
+            res.status(200).send({
+                status: true,
+                message: 'Changed data is saved successfully'
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: false,
+                message: error.message
+            })
+        }
     }
 }
