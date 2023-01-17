@@ -164,24 +164,35 @@ module.exports = {
                 }
             },
         ])
+        try {
+            if (nip[0].is_deleted === 1 || nip[0].user[0].is_active === 0) {
+                res.status(400).send({
+                    status: false,
+                    message: "an error occurred because the staff already removed!"
+                })
+            } else {
+                const updateStaff = await Staff.findOneAndUpdate(
+                    { _id: nip[0]._id },
+                    {
+                        is_deleted: 1
+                    }
+                )
+                const updateUser = await User.findOneAndUpdate(
+                    { _id: nip[0].user[0]._id },
+                    {
+                        is_active: 0
+                    }
+                )
 
-        const updateStaff = await Staff.findOneAndUpdate(
-            { _id: nip[0]._id },
-            {
-                is_deleted: 1
+                await updateStaff.save()
+                await updateUser.save()
+                res.status(200).send({
+                    status: true,
+                    message: "Staff has been deleted!"
+                })
             }
-        )
-        const updateUser = await User.findOneAndUpdate(
-            { _id: nip[0].user[0]._id },
-            {
-                is_active: 0
-            }
-        )
-
-
-        res.send({
-            updateStaff,
-            updateUser
-        })
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
