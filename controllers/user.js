@@ -73,6 +73,11 @@ module.exports = {
                     status: false,
                     error: "invalid password or email"
                 });
+            } else if (!user.is_active) {
+                return res.status(422).send({
+                    status: false,
+                    error: 'This account no longer has login access!'
+                })
             }
             await user.comparePassword(password)
             const accessToken = jwt.sign(
