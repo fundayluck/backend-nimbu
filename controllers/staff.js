@@ -1,5 +1,6 @@
 const Staff = require('../models/staff')
 const division = require('../models/division')
+const User = require('../models/user')
 module.exports = {
     createStaff: async (req, res) => {
         const {
@@ -98,7 +99,6 @@ module.exports = {
             ]
             await Staff.populate(nip, populateQuery)
             if (nip.length === 0) {
-                console.log('error');
                 res.status(404).send({
                     status: false,
                     data: 'All employees already have an account'
@@ -147,5 +147,41 @@ module.exports = {
                 message: error.message
             })
         }
+    },
+    deleteUser: async (req, res) => {
+        const nip = await Staff.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "_id",
+                    foreignField: "id_staff",
+                    as: 'user'
+                }
+            },
+            {
+                $match: {
+                    _id: Number(req.params.staffId),
+                }
+            },
+        ])
+
+        const updateStaff = await Staff.findOneAndUpdate(
+            { _id: nip[0]._id },
+            {
+                is_deleted: 1
+            }
+        )
+        const updateUser = await User.findOneAndUpdate(
+            { _id: nip[0].user[0]._id },
+            {
+                is_active: 0
+            }
+        )
+
+
+        res.send({
+            updateStaff,
+            updateUser
+        })
     }
 }

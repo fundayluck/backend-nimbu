@@ -37,7 +37,7 @@ const StaffSchema = new mongoose.Schema({
         type: String,
     },
     is_deleted: {
-        type: String,
+        type: Number,
         enum: [0, 1],
         default: 0
     }

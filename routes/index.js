@@ -17,5 +17,6 @@ router.get('/staff', auth, controllerStaff.getAllStaff)
 router.get('/staff/:staffId', auth, controllerStaff.getStaff)
 router.put('/staff/:staffId/edit', auth, controllerStaff.editStaff)
 router.get('/nip', auth, controllerStaff.getStaffWithoutAccount)
+router.get('/delete/:staffId', auth, controllerStaff.deleteUser)
 
 module.exports = router;
