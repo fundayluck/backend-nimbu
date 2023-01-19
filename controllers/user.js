@@ -90,7 +90,8 @@ module.exports = {
                 token: accessToken,
                 user: {
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    id_staff: user.id_staff
                 }
             });
         } catch (error) {
