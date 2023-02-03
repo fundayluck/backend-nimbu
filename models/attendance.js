@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose")
-import double from '@mongoosejs/double'
+const double = require('@mongoosejs/double')
 
 const AttendanceSchema = new Schema({
     id_user: {
@@ -7,7 +7,7 @@ const AttendanceSchema = new Schema({
         ref: "user",
     },
     date: {
-        type: Date
+        type: String
     },
     clock_in: {
         type: Date
@@ -16,7 +16,7 @@ const AttendanceSchema = new Schema({
         type: Date
     },
     description: {
-        Type: String
+        type: String
     },
     latitude: {
         type: double
@@ -26,7 +26,10 @@ const AttendanceSchema = new Schema({
     },
     totalhours: {
         type: Date
-    }
+    },
+    photo: {
+        type: String,
+    },
 })
 
 const Attendance = model("attendance", AttendanceSchema)

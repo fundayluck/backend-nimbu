@@ -13,6 +13,7 @@ app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.static("public"))
 app.use('/upload', express.static('./upload'))
+app.use('/staffPicture', express.static('./staffPicture'))
 
 app.use("/api", require('./routes'))
 
