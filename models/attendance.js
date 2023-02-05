@@ -25,7 +25,7 @@ const AttendanceSchema = new Schema({
         type: double
     },
     totalhours: {
-        type: Date
+        type: String
     },
     photo: {
         type: String,

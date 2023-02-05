@@ -22,6 +22,9 @@ router.put('/delete/:staffId', auth, controllerStaff.deleteUser)
 
 //attendance
 router.post('/attendance/clock_in', auth, upload.single('image'), controllerAttendance.clock_in)
-router.get('/attendance', controllerAttendance.getAttendance)
+router.post('/attendance/clock_out', auth, controllerAttendance.clock_out)
+router.get('/attendance', auth, controllerAttendance.getAttendance)
+router.get('/cekAttendance', auth, controllerAttendance.cekAttendance)
+router.get('/attendancebyid', auth, controllerAttendance.getAttendanceById)
 
 module.exports = router;
