@@ -9,10 +9,18 @@ module.exports = {
     },
     getAttendanceById: async (req, res) => {
         const attend = await Attendance.find({ id_user: req.user._id })
-        res.status(200).send({
-            status: true,
-            data: attend
-        })
+
+        if (attend.length > 0) {
+            res.status(200).send({
+                status: true,
+                data: attend
+            })
+        } else {
+            res.status(200).send({
+                status: false,
+                message: `you don't have records of your attendance`
+            })
+        }
     },
     clock_in: async (req, res) => {
         const {
