@@ -1,8 +1,6 @@
 const fs = require('fs')
 const Attendance = require('../models/attendance')
-const Staff = require('../models/staff')
 const moment = require('moment/moment')
-const User = require('../models/user')
 
 module.exports = {
     getAttendance: async (req, res) => {
@@ -10,7 +8,11 @@ module.exports = {
             const attend = await Attendance.find().populate({
                 path: 'id_user',
                 populate: {
-                    path: 'id_staff'
+                    path: 'id_staff',
+                    populate: {
+                        path: 'id_division',
+                        select: 'name'
+                    }
                 }
             })
             res.status(200).send({
