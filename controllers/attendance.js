@@ -1,11 +1,28 @@
 const fs = require('fs')
 const Attendance = require('../models/attendance')
+const Staff = require('../models/staff')
 const moment = require('moment/moment')
+const User = require('../models/user')
 
 module.exports = {
     getAttendance: async (req, res) => {
-        const attend = await Attendance.find({}).populate('id_user')
-        res.send(attend)
+        try {
+            const attend = await Attendance.find().populate({
+                path: 'id_user',
+                populate: {
+                    path: 'id_staff'
+                }
+            })
+            res.status(200).send({
+                status: true,
+                data: attend
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: false,
+                message: error.message
+            })
+        }
     },
     getAttendanceById: async (req, res) => {
         const attend = await Attendance.find({ id_user: req.user._id })
