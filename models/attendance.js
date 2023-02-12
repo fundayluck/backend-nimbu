@@ -15,7 +15,7 @@ const AttendanceSchema = new Schema({
     clock_out: {
         type: Date
     },
-    description: {
+    status: {
         type: String
     },
     latitude: {
