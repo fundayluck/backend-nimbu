@@ -4,6 +4,7 @@ const auth = require('../middlewares/requiredAuth')
 const controllerUser = require('../controllers/user')
 const controllerStaff = require('../controllers/staff')
 const controllerAttendance = require('../controllers/attendance')
+const controllerConfig = require('../controllers/config')
 const upload = require("../middlewares/upload")
 
 
@@ -26,5 +27,8 @@ router.post('/attendance/clock_out', auth, upload.single('image'), controllerAtt
 router.get('/attendance', auth, controllerAttendance.getAttendance)
 router.get('/cekAttendance', auth, controllerAttendance.cekAttendance)
 router.get('/attendancebyid', auth, controllerAttendance.getAttendanceById)
+
+//config
+router.get('/config', auth, controllerConfig.getConfig)
 
 module.exports = router;
