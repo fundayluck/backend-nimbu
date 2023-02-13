@@ -27,9 +27,7 @@ const AttendanceSchema = new Schema({
     totalhours: {
         type: String
     },
-    photo: {
-        type: String,
-    },
+    photo: [],
 })
 
 const Attendance = model("attendance", AttendanceSchema)

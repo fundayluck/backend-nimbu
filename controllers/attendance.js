@@ -84,7 +84,6 @@ module.exports = {
         } = req.body
         try {
             const config = await Config.find()
-            console.log(config[0]);
             let date = moment().format("YYYY-MM-DD")
             const findSameDate = await Attendance.findOne({ date, id_user: req.user._id })
             if (findSameDate) {
@@ -104,12 +103,12 @@ module.exports = {
                 if (timetoseconds(time) < (timetoseconds(start) - 600)) {
                     return res.status(400).send({
                         status: false,
-                        message: "Anda tidak dapat masuk sekarang! Anda dapat memulai jam masuk 10 menit sebelum " + start
+                        message: "Anda tidak dapat masuk sekarang! Anda dapat memulai jam masuk 10 menit sebelum pukul " + start
                     });
                 } else if (timetoseconds(time) > timetoseconds(late)) {
                     return res.status(400).send({
                         status: false,
-                        message: "Maaf Anda masuk lebih dari " + late + " setelah " + start + " ! Jadi kami menganggap Anda sebagai alfa."
+                        message: "Maaf Anda masuk lebih dari pukul " + late + " setelah pukul " + start + " ! Jadi kami menganggap Anda sebagai alfa."
                     });
                 } else if (timetoseconds(time) >= (timetoseconds(start) - 600) && timetoseconds(time) <= timetoseconds(start)) {
                     const dateString = `${getTime(0, 'Y-m-d')}`
@@ -126,7 +125,9 @@ module.exports = {
                         latitude,
                         longitude,
                         clock_in: datetime,
-                        photo: path,
+                        photo: {
+                            clock_in: path
+                        }
                     })
                     await attend.save()
                     res.status(200).send({
@@ -147,7 +148,9 @@ module.exports = {
                         latitude,
                         longitude,
                         clock_in: datetime,
-                        photo: path,
+                        photo: {
+                            clock_in: path
+                        },
                     })
                     await attend.save()
                     res.status(200).send({
@@ -161,6 +164,10 @@ module.exports = {
     },
     clock_out: async (req, res) => {
         try {
+            const path = 'staffPicture/' + Date.now() + '.png'
+            const imgData = req.body.image
+            const base64Data = imgData.replace(/^data:([A-Za-z-+/]+);base64,/, '')
+            fs.writeFileSync(path, base64Data, { encoding: 'base64' })
             const config = await Config.find()
             let date = moment().format("YYYY-MM-DD")
             const find = await Attendance.findOne({ id_user: req.user._id, date })
@@ -172,7 +179,7 @@ module.exports = {
             if (timetoseconds(time) < timetoseconds(finish)) {
                 return res.status(400).send({
                     status: false,
-                    message: "You can't clock out now! You can start clock out after " + finish
+                    message: "Anda tidak bisa keluar sekarang! Anda dapat memulai jam keluar setelah pukul " + finish
                 });
             } else if (timetoseconds(time) >= timetoseconds(finish)) {
                 const dateString = `${getTime(0, 'Y-m-d')}`
@@ -187,7 +194,8 @@ module.exports = {
                     {
                         clock_out: datetime,
                         totalhours: total_hours,
-                    }
+                        $push: { photo: { clock_out: path } }
+                    },
                 )
                 await attend.save()
                 res.status(200).send({
