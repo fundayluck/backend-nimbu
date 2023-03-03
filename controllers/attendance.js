@@ -108,7 +108,7 @@ module.exports = {
             let weekend = getSatSun(month, year);
             for (let i = 0; i < weekend.length; i++) {
                 if (weekend[i] == day) {
-                    res.status(400).send({
+                    return res.status(400).send({
                         status: false,
                         message: "Today is weekend! No need to clock in today!"
                     });
@@ -117,7 +117,7 @@ module.exports = {
 
             const findSameDate = await Attendance.findOne({ date, id_user: req.user._id })
             if (findSameDate) {
-                res.status(400).send({
+                return res.status(400).send({
                     status: false,
                     message: 'Anda sudah Login di hari ini!'
                 })
@@ -132,12 +132,12 @@ module.exports = {
                 let late = config[0].late
 
                 if (timetoseconds(time) < (timetoseconds(start) - 600)) {
-                    res.status(400).send({
+                    return res.status(400).send({
                         status: false,
                         message: "Anda tidak dapat masuk sekarang! Anda dapat memulai jam masuk 10 menit sebelum pukul " + start
                     });
                 } else if (timetoseconds(time) > timetoseconds(late)) {
-                    res.status(400).send({
+                    return res.status(400).send({
                         status: false,
                         message: "Maaf Anda masuk lebih dari pukul " + late + " setelah pukul " + start + " ! Jadi kami menganggap Anda sebagai alfa."
                     });
