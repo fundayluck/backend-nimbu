@@ -30,5 +30,6 @@ router.get('/attendancebyid', auth, controllerAttendance.getAttendanceById)
 
 //config
 router.get('/config', auth, controllerConfig.getConfig)
+router.put('/edit-config', auth, controllerConfig.updateConfig)
 
 module.exports = router;

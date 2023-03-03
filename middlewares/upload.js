@@ -16,4 +16,5 @@ module.exports = multer({
 
         cb(null, true);
     },
+    limits: { fieldSize: 25 * 1024 * 1024 }
 });
