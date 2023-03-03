@@ -14,7 +14,9 @@ module.exports = {
     },
     updateConfig: async (req, res) => {
         const { start_working, finish_working, late } = req.body
+
         try {
+
             await Config.updateOne({
                 start_working,
                 finish_working,
@@ -24,6 +26,7 @@ module.exports = {
                 status: true,
                 message: 'success'
             })
+
         } catch (error) {
             res.status(400).send({
                 status: false,
