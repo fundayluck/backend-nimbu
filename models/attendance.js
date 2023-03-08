@@ -7,7 +7,7 @@ const AttendanceSchema = new Schema({
         ref: "user",
     },
     date: {
-        type: String
+        type: Date
     },
     clock_in: {
         type: Date

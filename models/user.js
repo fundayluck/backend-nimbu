@@ -24,6 +24,11 @@ const UserSchema = new Schema({
     role: {
         type: String,
         enum: ['ADMIN', 'HR', 'STAFF']
+    },
+    is_attend: {
+        type: Number,
+        enum: [0, 1],
+        default: 1
     }
 }, { timestamps: true })
 

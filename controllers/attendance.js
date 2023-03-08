@@ -2,6 +2,8 @@ const fs = require('fs')
 const Attendance = require('../models/attendance')
 const moment = require('moment/moment')
 const Config = require('../models/config');
+const User = require('../models/user');
+const cron = require('node-cron')
 
 function timetoseconds(time) {
     return parseInt(time.substr(0, 2)) * 3600 + parseInt(time.substr(3, 5)) * 60 + parseInt(time.substr(6, 8));
@@ -26,7 +28,7 @@ function getTime(days = 0, format = "Y-m-d H:i:s") {
     let hours = ("0" + date.getHours()).slice(-2);
     let minutes = ("0" + date.getMinutes()).slice(-2);
     let seconds = ("0" + date.getSeconds()).slice(-2);
-    var date_time;
+    let date_time;
     if (format == "Y-m-d H:i:s") {
         date_time = year + "-" + month + "-" + dates + " " + hours + ":" + minutes + ":" + seconds;
     } else if (format == "Y-m-d") {
@@ -53,11 +55,40 @@ function getSatSun(month, year) {
     return holidays;
 }
 
+const notAttend = async () => {
+    let date = getTime(0, 'Y-m-d')
+    const user = await User.find({ is_attend: 1 })
+    for (let i = 0; i < user.length; i++) {
+        const j = new Attendance({
+            id_user: user[i].id,
+            status: "alpha",
+            date: date,
+            latitude: null,
+            longitude: null,
+            clock_in: null,
+            photo: null
+        })
+        const user = await User.findOneAndUpdate(
+            { _id: user[i]._id },
+            {
+                is_attend: 0
+            }
+        )
+        await j.save()
+        await user.save()
+    }
+}
+
+cron.schedule('0 10 * * 1-5', () => { notAttend() })
+
+
 
 module.exports = {
     getAttendance: async (req, res) => {
         try {
-            const attend = await Attendance.find().populate({
+            const attend = await Attendance.find({
+                // date: { $gte: date, $lte: date }
+            }).populate({
                 path: 'id_user',
                 populate: {
                     path: 'id_staff',
@@ -160,6 +191,13 @@ module.exports = {
                             clock_in: path
                         }
                     })
+                    const user = await User.findOneAndUpdate(
+                        { _id: req.user._id },
+                        {
+                            is_attend: 0
+                        }
+                    )
+                    await user.save()
                     await attend.save()
                     res.status(200).send({
                         data: attend
@@ -183,6 +221,13 @@ module.exports = {
                             clock_in: path
                         },
                     })
+                    const user = await User.findOneAndUpdate(
+                        { _id: req.user._id },
+                        {
+                            is_attend: 0
+                        }
+                    )
+                    await user.save()
                     await attend.save()
                     res.status(200).send({
                         data: attend
@@ -240,7 +285,7 @@ module.exports = {
 
     },
     cekAttendance: async (req, res) => {
-        let date = moment().format("YYYY-MM-DD")
+        let date = getTime(0, 'Y-m-d')
         const attend = await Attendance.find({ id_user: req.user._id, date })
         if (attend.length == 1 && attend[0].clock_in && attend[0].clock_out) {
             return res.status(200).send({
