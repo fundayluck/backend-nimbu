@@ -96,7 +96,7 @@ const changeStatus = async () => {
 }
 
 cron.schedule('0 0 * * 1-5', () => { changeStatus() })
-cron.schedule('9 11 * * 1-5', () => { notAttend() })
+cron.schedule('0 12 * * 1-5', () => { notAttend() })
 
 
 
