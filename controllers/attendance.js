@@ -43,7 +43,7 @@ function getSatSun(month, year) {
     let holidays = [];
     for (let i = 0; i <= new Date(year, month, 0).getDate(); i++) {
         let date = new Date(year, month, i);
-        if (date.getDay() == 6 || date.getDay() == 0) {
+        if (date.getDay() == 6 || date.getDay() === 0) {
             if (holidays.length <= 2 && date.getDate() == 31) {
                 continue;
             } else if (holidays.length <= 2 && date.getDate() == 30) {
@@ -51,7 +51,7 @@ function getSatSun(month, year) {
             }
             holidays.push(date.getDate());
         }
-    };
+    }
     return holidays;
 }
 
@@ -66,6 +66,7 @@ const notAttend = async () => {
             latitude: null,
             longitude: null,
             clock_in: null,
+            clock_out: null,
             photo: null
         })
         const userdoattend = await User.findOneAndUpdate(
