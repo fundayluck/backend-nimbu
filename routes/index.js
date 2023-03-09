@@ -26,7 +26,8 @@ router.post('/attendance/clock_in', auth, upload.single('image'), controllerAtte
 router.post('/attendance/clock_out', auth, upload.single('image'), controllerAttendance.clock_out)
 router.get('/attendance', auth, controllerAttendance.getAttendance)
 router.get('/cekAttendance', auth, controllerAttendance.cekAttendance)
-router.get('/attendancebyid', auth, controllerAttendance.getAttendanceById)
+router.get('/attendancebystaff', auth, controllerAttendance.getAttendanceByStaff)
+router.get('/')
 
 //config
 router.get('/config', auth, controllerConfig.getConfig)

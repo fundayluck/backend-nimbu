@@ -6,7 +6,7 @@ const connectDB = require('./db/conn')
 const morgan = require('morgan')
 const cors = require('cors')
 
-const whitelist = ['http://localhost:3000']
+const whitelist = ['http://localhost:3000', 'https://nimboost.nimbu.id']
 
 app.use(NODE_ENV === "production" ? cors({ origin: whitelist }) : cors())
 app.use(morgan("tiny"))

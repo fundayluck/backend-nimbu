@@ -126,7 +126,7 @@ module.exports = {
             })
         }
     },
-    getAttendanceById: async (req, res) => {
+    getAttendanceByStaff: async (req, res) => {
         const attend = await Attendance.find({ id_user: req.user._id })
 
         if (attend.length > 0) {
