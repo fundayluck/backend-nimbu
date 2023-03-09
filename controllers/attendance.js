@@ -68,18 +68,34 @@ const notAttend = async () => {
             clock_in: null,
             photo: null
         })
-        const user = await User.findOneAndUpdate(
+        const userdoattend = await User.findOneAndUpdate(
             { _id: user[i]._id },
             {
                 is_attend: 0
             }
         )
         await j.save()
-        await user.save()
+        await userdoattend.save()
     }
 }
 
-cron.schedule('0 10 * * 1-5', () => { notAttend() })
+const changeStatus = async () => {
+    const user = await User.find({ is_attend: 0 })
+    for (let i = 0; i < user.length; i++) {
+        if (user[i].is_attend === 0) {
+            const userdoattend = await User.findOneAndUpdate(
+                { _id: user[i]._id },
+                {
+                    is_attend: 1
+                }
+            )
+            await userdoattend.save()
+        }
+    }
+}
+
+cron.schedule('0 0 * * 1-5', () => { changeStatus() })
+cron.schedule('9 11 * * 1-5', () => { notAttend() })
 
 
 
