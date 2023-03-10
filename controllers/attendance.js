@@ -8,6 +8,7 @@ const cron = require('node-cron')
 function timetoseconds(time) {
     return parseInt(time.substr(0, 2)) * 3600 + parseInt(time.substr(3, 5)) * 60 + parseInt(time.substr(6, 8));
 }
+
 function secondstotime(seconds) {
     var hours = Math.floor(seconds / 3600);
     var minutes = Math.floor((seconds - (hours * 3600)) / 60);
@@ -18,6 +19,7 @@ function secondstotime(seconds) {
     if (secondss < 10) { secondss = "0" + secondss; }
     return hours + ':' + minutes + ':' + secondss;
 }
+
 function getTime(days = 0, format = "Y-m-d H:i:s") {
     var date = new Date();
     date.setDate(date.getDate() + days);
@@ -80,6 +82,33 @@ const notAttend = async () => {
     }
 }
 
+const isWeekend = async () => {
+    let date = getTime(0, "Y-m-d");
+    let my_date = date.split('-')
+    let year = parseInt(my_date[0]);
+    let month = parseInt(my_date[1]) - 1;
+    let day = parseInt(my_date[2]);
+    let weekend = getSatSun(month, year);
+    for (let i = 0; i < weekend.length; i++) {
+        if (weekend[i] == day) {
+            const user = await User.find()
+            for (let i = 0; i < user.length; i++) {
+                const j = new Attendance({
+                    id_user: user[i].id,
+                    status: "Weekend",
+                    date: date,
+                    latitude: null,
+                    longitude: null,
+                    clock_in: null,
+                    clock_out: null,
+                    photo: null
+                })
+                await j.save()
+            }
+        }
+    }
+}
+
 const changeStatus = async () => {
     const user = await User.find({ is_attend: 0 })
     for (let i = 0; i < user.length; i++) {
@@ -97,6 +126,7 @@ const changeStatus = async () => {
 
 cron.schedule('0 0 * * 1-5', () => { changeStatus() })
 cron.schedule('0 12 * * 1-5', () => { notAttend() })
+cron.schedule('0 0 * * 6-7', () => { isWeekend() })
 
 
 
@@ -205,7 +235,8 @@ module.exports = {
                         longitude,
                         clock_in: datetime,
                         photo: {
-                            clock_in: path
+                            clock_in: path,
+                            clock_out: null
                         }
                     })
                     const user = await User.findOneAndUpdate(
@@ -235,7 +266,8 @@ module.exports = {
                         longitude,
                         clock_in: datetime,
                         photo: {
-                            clock_in: path
+                            clock_in: path,
+                            clock_out: null
                         },
                     })
                     const user = await User.findOneAndUpdate(
@@ -326,5 +358,28 @@ module.exports = {
                     clock_out: 0,
                 })
             }
+    },
+    getAttendanceById: async (req, res) => {
+        try {
+            const getAttendance = await Attendance.findOne({ _id: req.params.attendanceId }).populate({
+                path: 'id_user',
+                populate: {
+                    path: 'id_staff',
+                    populate: {
+                        path: 'id_division',
+                        select: 'name'
+                    }
+                }
+            })
+            res.status(200).send({
+                status: true,
+                data: getAttendance
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: false,
+                message: 'error'
+            })
+        }
     }
 }
