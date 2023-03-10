@@ -335,12 +335,28 @@ module.exports = {
     },
     cekAttendance: async (req, res) => {
         let date = getTime(0, 'Y-m-d')
+        let my_date = date.split('-')
+        let year = parseInt(my_date[0]);
+        let month = parseInt(my_date[1]) - 1;
+        let day = parseInt(my_date[2]);
+        let weekend = getSatSun(month, year);
+        for (let i = 0; i < weekend.length; i++) {
+            if (weekend[i] == day) {
+                return res.status(200).send({
+                    status: true,
+                    clock_in: 0,
+                    clock_out: 0,
+                    weekend: 1
+                });
+            }
+        }
         const attend = await Attendance.find({ id_user: req.user._id, date })
         if (attend.length == 1 && attend[0].clock_in && attend[0].clock_out) {
             return res.status(200).send({
                 status: true,
                 clock_in: 1,
                 clock_out: 1,
+                weekend: 0
             })
         }
         else
@@ -349,6 +365,7 @@ module.exports = {
                     status: true,
                     clock_in: 0,
                     clock_out: 1,
+                    weekend: 0
                 })
 
             } else {
@@ -356,6 +373,7 @@ module.exports = {
                     status: true,
                     clock_in: 1,
                     clock_out: 0,
+                    weekend: 0
                 })
             }
     },
